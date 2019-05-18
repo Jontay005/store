@@ -39,7 +39,7 @@ todoRoutes.route('/').get(function(req, res){
 });
 
 //findById
-todoRoutes.route(':/id').get(function(req, res){
+todoRoutes.route('/:id').get(function(req, res){
     let id = req.params.id;
     Todo.findById(id, function(err, todo){
         res.json(todo);
@@ -59,22 +59,20 @@ todoRoutes.route('/add').post(function(req, res) {
 });
 
 //update method
-todoRoutes.route('/update/:id').post(function(req, res){
-    Todo.findById(req.params.id, function(err, todo){
-        if(!todo)
-            res.status(404).send('data not found');
-        else 
+todoRoutes.route('/update/:id').post(function(req, res) {
+    Todo.findById(req.params.id, function(err, todo) {
+        if (!todo)
+            res.status(404).send("data is not found");
+        else
             todo.todo_description = req.body.todo_description;
             todo.todo_responsible = req.body.todo_responsible;
-            todo.todo_priority = req.body.todo_prioroty;
+            todo.todo_priority = req.body.todo_priority;
             todo.todo_completed = req.body.todo_completed;
-
-            //save new todo
-            todo.save().then( todo =>{
-                res.json('Todo Updated!');
+            todo.save().then(todo => {
+                res.json('Todo updated!');
             })
             .catch(err => {
-                res.status(400).send('Update failed');
+                res.status(400).send("Update not possible");
             });
-    })
-})
+    });
+});
